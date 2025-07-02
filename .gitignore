@@ -2,12 +2,12 @@
 node_modules/
 backend/config/*.json
 
+
 # 🔹 Ignore environment variables
 .env
 
 # # 🔹 Ignore build files (React Native & Backend)
 
-echo "backend/config/*.json"
 
 # 🔹 Ignore logs and temporary files
 *.log
