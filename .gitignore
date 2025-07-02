@@ -1,6 +1,6 @@
 # 🔹 Ignore Node.js dependencies
 node_modules/
-
+backend/config/*.json
 
 # 🔹 Ignore environment variables
 .env
