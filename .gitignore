@@ -1,17 +1,12 @@
 # 🔹 Ignore Node.js dependencies
 node_modules/
-backend/config/*.json
 
 
 # 🔹 Ignore environment variables
 .env
 
 # # 🔹 Ignore build files (React Native & Backend)
-android/
-ios/
-.bundle/
-dist/
-build/
+
 
 # 🔹 Ignore logs and temporary files
 *.log
