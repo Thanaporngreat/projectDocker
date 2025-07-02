@@ -27,3 +27,4 @@ Thumbs.db
 coverage/
 __tests__/
 jest.config.js
+backend/config/*.json 
