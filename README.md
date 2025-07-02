@@ -2,6 +2,10 @@
 
 โหลด android studio 
 
+เมื่อติดตั้งเสร็จ ไปที่ sdk manager  ใน sdk platforms ให้ลง Android 15 
+
+ช่อง sdk tools  ตรง android SDK  ลง 35.0.0  , NDK ลง 26.1.1
+
 โหลด jdk version 17 
 
 สร้าง ANDROID_HOME ในEdit environment เเล้วเพิ่ม path C:\Users\Apai\AppData\Local\Android\Sdk
