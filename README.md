@@ -1,3 +1,8 @@
+Copy Log
+
+https://docs.google.com/document/d/1ZILVT6yCX5upiD0YDGM5RXOBOz_wVnKoXbfvZTsJlWk/edit?usp=drive_link
+
+
 โหลด node.js 
 
 โหลด android studio 
