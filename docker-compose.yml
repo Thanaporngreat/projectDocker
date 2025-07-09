@@ -1,0 +1,68 @@
+# version: '3'
+# services:
+#   db:
+#     image: mysql:5.7
+#     environment:
+#       MYSQL_ROOT_PASSWORD: root  # กำหนดรหัสผ่านสำหรับ root user
+#       MYSQL_DATABASE: iot       # กำหนดฐานข้อมูลที่ต้องการสร้าง
+#     ports:
+#       - "3306:3306"
+#     volumes:
+#       - db_data:/var/lib/mysql  # กำหนด volume สำหรับเก็บข้อมูลฐานข้อมูล
+
+#   backend:
+#     build: ./backend
+#     container_name: backend
+#     depends_on:
+#       - db
+#     ports:
+#       - "8000:8000"
+#     environment:
+#       - DB_HOST=db             # ใช้ชื่อของ service db สำหรับการเชื่อมต่อ
+#       - DB_USER=root
+#       - DB_PASSWORD=root
+#       - DB_NAME=iot
+
+# volumes:
+#   db_data:
+
+
+
+
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root  # กำหนดรหัสผ่านสำหรับ root user
+      MYSQL_DATABASE: iot       # กำหนดฐานข้อมูลที่ต้องการสร้าง
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql  # กำหนด volume สำหรับเก็บข้อมูลฐานข้อมูล
+
+  backend:
+    build: ./backend  # ที่อยู่ของ Dockerfile สำหรับ backend
+    container_name: backend
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"  # เปิดพอร์ตสำหรับ backend
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=iot
+
+  myapp:
+    build: ./myapp  # ที่อยู่ของ Dockerfile สำหรับ myapp (React Native หรือ Mobile App)
+    container_name: myapp
+    ports:
+      - "8081:8081"  # เปิดพอร์ตที่ React Native server ใช้
+    volumes:
+      - ./myapp:/usr/src/app
+    environment:
+      - REACT_NATIVE_PACKAGER_HOSTNAME=localhost  # ตั้งค่าพอร์ตที่แอปจะรันใน container
+
+volumes:
+  db_data:

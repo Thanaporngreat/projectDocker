@@ -1,6 +1,6 @@
 # 🔹 Ignore Node.js dependencies
 node_modules/
-backend/config/*.json
+# backend/config/*.json
 
 
 # 🔹 Ignore environment variables
@@ -27,4 +27,4 @@ Thumbs.db
 coverage/
 __tests__/
 jest.config.js
-backend/config/*.json 
+
