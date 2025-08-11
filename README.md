@@ -35,3 +35,8 @@ cd ..  เพื่อออกมาfolder หลัดเเล้ว cd myapp
 
 รัน react  ใช้คำสั่ง npm start 
 
+
+555
+5
+444
+
