@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
             setFcmToken(token);
       
             // 🔥 ส่ง token ไปยัง backend
-            await fetch('http://10.0.2.2:3000/api/user/save-fcm-token', {
+            await fetch('/api/user/save-fcm-token', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
 
     const handleLogin = async () => {
       try {
-          const response = await fetch('http://10.0.2.2:3000/api/auth/login', {
+          const response = await fetch('/api/auth/login', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   
               // 🔥 ส่ง fcmToken ไปยัง backend หลัง login สำเร็จ
               if (fcmToken) {
-                  await fetch('http://10.0.2.2:3000/api/user/save-fcm-token', {
+                  await fetch('/api/user/save-fcm-token', {
                       method: 'POST',
                       headers: {
                           'Content-Type': 'application/json',

@@ -29,7 +29,7 @@ const MoreScreen = ({ navigation }: { navigation: any }) => {
     // ✅ ฟังก์ชันดึงค่าจาก API
     const fetchGasData = async () => {
         try {
-            const response = await fetch("http://192.168.110.97:3000/api/gas");
+            const response = await fetch("/api/gas");
             const data = await response.json();
     
             console.log("📥 Debug: Received Gas Data:", data); // เพิ่ม Debug Log
@@ -43,7 +43,7 @@ const MoreScreen = ({ navigation }: { navigation: any }) => {
 
     const fetchWaterLeakData = async () => {
         try {
-            const response = await fetch("http://192.168.110.97:3000/api/water_leak");
+            const response = await fetch("/api/water_leak");
             const data = await response.json();
 
             console.log("📥 Debug: Received Water Leak Status:", data); // เช็คค่าที่ API ส่งมา
@@ -57,7 +57,7 @@ const MoreScreen = ({ navigation }: { navigation: any }) => {
 
     const fetchBmeData = async () => {
         try {
-            const response = await fetch("http://192.168.110.97:3000/api/bme680");
+            const response = await fetch("/api/bme680");
             const data = await response.json();
             setBmeData(data);
         } catch (error) {
@@ -67,7 +67,7 @@ const MoreScreen = ({ navigation }: { navigation: any }) => {
 
     const fetchDoorStatus = async () => {
         try {
-            const response = await fetch('http://192.168.110.97:3000/api/door_sensor'); // Replace with your API URL
+            const response = await fetch('/api/door_sensor'); // Replace with your API URL
             const data = await response.json();
             setDoorStatus(data.status === 'Door Opened' ? 'เปิด' : 'ปิด'); // Map 'Open' -> 'เปิด', 'Closed' -> 'ปิด'
         } catch (error) {

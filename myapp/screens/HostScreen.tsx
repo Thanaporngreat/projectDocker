@@ -31,7 +31,7 @@ const HostScreen = () => {
       const userId = await AsyncStorage.getItem('userId');
       if (!userId) return;
       try {
-        const res = await axios.get(`http://10.0.2.2:3000/api/init-or-create-host/${userId}`);
+        const res = await axios.get(`/api/init-or-create-host/${userId}`);
         setHostId(res.data.host_id);
         setRole(res.data.role);
         setHostName(res.data.host_name);
@@ -45,13 +45,13 @@ const HostScreen = () => {
   }, []);
 
   const fetchMembers = async (id: number) => {
-    const res = await axios.get(`http://10.0.2.2:3000/api/host-members/${id}`);
+    const res = await axios.get(`/api/host-members/${id}`);
     setMembers(res.data.members);
   };
 
   const addMember = async () => {
     try {
-      const res = await axios.post('http://10.0.2.2:3000/api/add-host-members', {
+      const res = await axios.post('/api/add-host-members', {
         host_id: hostId,
         member_emails: [emailInput],
       });

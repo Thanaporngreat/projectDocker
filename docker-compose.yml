@@ -1,68 +1,46 @@
-# version: '3'
-# services:
-#   db:
-#     image: mysql:5.7
-#     environment:
-#       MYSQL_ROOT_PASSWORD: root  # กำหนดรหัสผ่านสำหรับ root user
-#       MYSQL_DATABASE: iot       # กำหนดฐานข้อมูลที่ต้องการสร้าง
-#     ports:
-#       - "3306:3306"
-#     volumes:
-#       - db_data:/var/lib/mysql  # กำหนด volume สำหรับเก็บข้อมูลฐานข้อมูล
+version: '3.8'
 
-#   backend:
-#     build: ./backend
-#     container_name: backend
-#     depends_on:
-#       - db
-#     ports:
-#       - "8000:8000"
-#     environment:
-#       - DB_HOST=db             # ใช้ชื่อของ service db สำหรับการเชื่อมต่อ
-#       - DB_USER=root
-#       - DB_PASSWORD=root
-#       - DB_NAME=iot
-
-# volumes:
-#   db_data:
-
-
-
-
-version: '3'
 services:
   db:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root  # กำหนดรหัสผ่านสำหรับ root user
-      MYSQL_DATABASE: iot       # กำหนดฐานข้อมูลที่ต้องการสร้าง
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "iot"
     volumes:
-      - db_data:/var/lib/mysql  # กำหนด volume สำหรับเก็บข้อมูลฐานข้อมูล
+      - db_data:/var/lib/mysql
+      - ./db/init:/docker-entrypoint-initdb.d:ro   # << เพิ่มบรรทัดนี้
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      retries: 10
+
 
   backend:
-    build: ./backend  # ที่อยู่ของ Dockerfile สำหรับ backend
+    build: ./backend
     container_name: backend
     depends_on:
-      - db
-    ports:
-      - "8000:8000"  # เปิดพอร์ตสำหรับ backend
+      db:
+        condition: service_healthy
     environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - DB_NAME=iot
+      DB_HOST: "db"
+      DB_USER: "root"
+      DB_PASSWORD: "root"
+      DB_NAME: "iot"
+      DB_PORT: "3306"
+    ports:
+      - "8000:8000"
 
   myapp:
-    build: ./myapp  # ที่อยู่ของ Dockerfile สำหรับ myapp (React Native หรือ Mobile App)
+    build: ./myapp
     container_name: myapp
     ports:
-      - "8081:8081"  # เปิดพอร์ตที่ React Native server ใช้
+      - "8081:8081"
     volumes:
       - ./myapp:/usr/src/app
     environment:
-      - REACT_NATIVE_PACKAGER_HOSTNAME=localhost  # ตั้งค่าพอร์ตที่แอปจะรันใน container
+      REACT_NATIVE_PACKAGER_HOSTNAME: "0.0.0.0"
+      CHOKIDAR_USEPOLLING: "1"
+    command: ["npx","react-native","start","--host","0.0.0.0","--port","8081"]
 
 volumes:
   db_data:

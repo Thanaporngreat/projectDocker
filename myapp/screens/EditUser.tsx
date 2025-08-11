@@ -46,7 +46,7 @@ const EditUser = () => {
     const fetchUserData = async () => {
         try {
             const authToken = await AsyncStorage.getItem('authToken');
-            const response = await axios.get('http://10.0.2.2:3000/api/user/me', {
+            const response = await axios.get('/api/user/me', {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },
@@ -87,7 +87,7 @@ const EditUser = () => {
                 birth_date: userData.birth_date ? new Date(userData.birth_date).toISOString() : "",
             };
 
-            const response = await axios.put(`http://10.0.2.2:3000/api/user/me`, payload, {
+            const response = await axios.put(`/api/user/me`, payload, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },

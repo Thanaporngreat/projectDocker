@@ -31,7 +31,7 @@ const RegisterScreen = ({ navigation }: Props) => {
         }
     
         try {
-            const response = await axios.post('http://10.0.2.2:3000/api/auth/register', {
+            const response = await axios.post('/api/auth/register', {
                 full_name: formData.full_name,
                 birth_date: formData.birth_date,
                 phone: formData.phone,

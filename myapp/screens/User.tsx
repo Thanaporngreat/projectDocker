@@ -21,7 +21,7 @@ const UserProfile = ({ navigation }: { navigation: any }) => {
         try {
             const token = await AsyncStorage.getItem('authToken');
             if (token) {
-                const response = await axios.get('http://10.0.2.2:3000/api/user/me', {
+                const response = await axios.get('/api/user/me', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

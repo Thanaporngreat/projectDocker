@@ -16,7 +16,7 @@ const ResetPasswordScreen = ({ navigation }: { navigation: any }) => {
 
     const handleEmailSubmit = async () => {
         try {
-            const response = await fetch('http://10.0.2.2:3000/api/auth/request-reset', {
+            const response = await fetch('/api/auth/request-reset', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),
@@ -42,7 +42,7 @@ const ResetPasswordScreen = ({ navigation }: { navigation: any }) => {
         }
 
         try {
-            const response = await fetch('http://10.0.2.2:3000/api/auth/verify-pin', {
+            const response = await fetch('/api/auth/verify-pin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, pin }),
@@ -68,7 +68,7 @@ const ResetPasswordScreen = ({ navigation }: { navigation: any }) => {
         }
 
         try {
-            const response = await fetch('http://10.0.2.2:3000/api/auth/reset-password', {
+            const response = await fetch('/api/auth/reset-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, pin, newPassword }),
@@ -89,7 +89,7 @@ const ResetPasswordScreen = ({ navigation }: { navigation: any }) => {
 
     const handleResendPin = async () => {
         try {
-            const response = await fetch('http://10.0.2.2:3000/api/auth/request-reset', {
+            const response = await fetch('/api/auth/request-reset', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),

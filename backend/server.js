@@ -15,7 +15,10 @@ require('dotenv').config(); // โหลดค่าจากไฟล์ .env
 const mqtt = require("mqtt"); // ใช้ MQTT
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
+
+// health check
+app.get('/health', (req, res) => res.json({ ok: true }));
 
 // 🟢 **ตั้งค่า MQTT Broker**
 // เปลี่ยนค่าของ mqttBroker เป็น HiveMQ Cloud
@@ -526,7 +529,6 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
-
 
 
 

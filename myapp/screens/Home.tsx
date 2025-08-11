@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.110.97:3000/api/heartrate');
+        const response = await axios.get('/api/heartrate');
         setHeartrateData(response.data);
       } catch (err) {
         console.error("❌ Error fetching heartrate data:", err);
@@ -30,7 +30,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await axios.get('http://192.168.110.97:3000/api/history');
+        const response = await axios.get('/api/history');
         const formattedData = response.data.map((item: any) => ({
           ...item,
           hr: parseFloat(item.hr),
