@@ -35,12 +35,11 @@ services:
     container_name: myapp
     ports:
       - "8081:8081"
-    volumes:
-      - ./myapp:/usr/src/app
     environment:
       REACT_NATIVE_PACKAGER_HOSTNAME: "0.0.0.0"
       CHOKIDAR_USEPOLLING: "1"
-    command: ["npx","react-native","start","--host","0.0.0.0","--port","8081"]
+    restart: unless-stopped
+
 
 volumes:
   db_data:
