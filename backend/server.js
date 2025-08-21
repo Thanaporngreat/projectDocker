@@ -10,9 +10,9 @@ const PORT = process.env.PORT || 8000;
 app.use(cors({
   origin: [
     'http://202.28.49.122',
-    'http://202.28.49.122:40259',
-    'http://localhost:40259',
-    'http://localhost:3000'
+    'http://202.28.49.122:8081', // Metro/เว็บที่รันบนเครื่องอาจารย์
+    'http://localhost:8081',
+    'http://localhost:3000'     // ถ้าคุณมีเว็บ front-end เรียก API
   ],
   credentials: true
 }));

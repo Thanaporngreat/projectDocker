@@ -12,8 +12,7 @@ services:
       test: ["CMD-SHELL","pg_isready -U iotuser -d iot"]
       interval: 5s
       retries: 20
-    ports:
-      - "20259:5432"        # ← 2XXXX
+    # ไม่จำเป็นต้อง expose 5432 ออก host สำหรับงาน 2
     restart: unless-stopped
 
   backend:
@@ -29,12 +28,12 @@ services:
       DB_USER: "iotuser"
       DB_PASSWORD: "iotpass"
       DB_NAME: "iot"
-      DB_PORT: "5432"       # ภายใน network ใช้ 5432 เท่านั้น
+      DB_PORT: "5432"          # ภายใน network ใช้ 5432
       INIT_USER_EMAIL: "test@example.com"
       INIT_USER_PASSWORD: "@212224236"
       INIT_USER_NAME: "Test User"
     ports:
-      - "10259:8000"        # ← 1XXXX
+      - "8000:8000"            # API ออกพอร์ตปกติ
     restart: unless-stopped
 
   adminer:
@@ -42,14 +41,14 @@ services:
     environment:
       - ADMINER_DEFAULT_SERVER=postgres
     ports:
-      - "30259:8080"        # ← 3XXXX
+      - "8080:8080"            # Adminer UI
     restart: unless-stopped
 
   myapp:
     build: ./myapp
     container_name: myapp
     ports:
-      - "40259:8081"        # ← 4XXXX (Metro)
+      - "8081:8081"            # Metro RN ปกติ
     environment:
       REACT_NATIVE_PACKAGER_HOSTNAME: "0.0.0.0"
       CHOKIDAR_USEPOLLING: "1"
