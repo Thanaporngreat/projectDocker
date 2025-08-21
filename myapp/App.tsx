@@ -17,8 +17,10 @@ import UserDetailScreen from './screens/UserDetailScreen';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 
 // ตั้งค่า baseURL ให้ทั้งแอป
+const API_PORT = 10259; // ← พอร์ต API ของเพื่อน (1XXXX)
 const BASE_URL =
-  Platform.OS === 'android' ? 'http://10.0.2.2:8000' : 'http://localhost:8000';
+  Platform.OS === 'android'
+    ? `http://10.0.2.2:${API_PORT}`   // Android Emulator
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.timeout = 10000;
 

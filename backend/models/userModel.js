@@ -1,34 +1,50 @@
+// models/userModel.js
 const db = require('../config/dbConfig');
 
 const User = {
-    // สร้างผู้ใช้ใหม่
-    create: async (data) => {
-        const query = 'INSERT INTO users (full_name, birth_date, phone, email, password) VALUES (?, ?, ?, ?, ?)';
-        const [results] = await db.query(query, [data.full_name, data.birth_date, data.phone, data.email, data.password]);
-        return results; // คืนค่า Promise ให้ใช้งาน await ได้
-    },
+  // สร้างผู้ใช้ใหม่ (คืนแถวที่สร้าง)
+  create: async (data) => {
+    const sql = `
+      INSERT INTO users (full_name, birth_date, phone, email, password)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *`;
+    const params = [
+      data.full_name ?? null,
+      data.birth_date ?? null, // schema อนุญาต null
+      data.phone ?? null,
+      data.email,
+      data.password,           // ถ้า hash ไว้แล้ว ส่ง hash มาที่นี่
+    ];
+    const [rows] = await db.query(sql, params);
+    return rows[0];
+  },
 
-    // ค้นหาผู้ใช้โดย email
-    findOne: async (email) => {
-        const query = 'SELECT * FROM users WHERE email = ? LIMIT 1';
-        const [results] = await db.query(query, [email]);
-        return results[0] || null; // คืนผู้ใช้ที่พบ หรือ null ถ้าไม่พบ
-    },
+  // ค้นหาผู้ใช้โดย email
+  findOne: async (email) => {
+    const [rows] = await db.query(
+      'SELECT * FROM users WHERE email = $1 LIMIT 1',
+      [email]
+    );
+    return rows[0] || null;
+  },
 
-    // ค้นหาผู้ใช้โดย id
-    findById: async (id) => {
-        const query = 'SELECT * FROM users WHERE id = ? LIMIT 1';
-        const [results] = await db.query(query, [id]);
-        return results[0] || null; // คืนผู้ใช้ที่พบ หรือ null ถ้าไม่พบ
-    },
-    //----------------------อัพเดตรหัสผ่านในDataBases---------------------------------------------------------------------------------------------------------------------------------
-    findOne: async (email) => {
-        const [rows] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
-        return rows[0];
-    },
-    updatePassword: async (email, newPassword) => {
-        return db.execute('UPDATE users SET password = ? WHERE email = ?', [newPassword, email]);
-    },
+  // ค้นหาผู้ใช้โดย id
+  findById: async (id) => {
+    const [rows] = await db.query(
+      'SELECT * FROM users WHERE id = $1 LIMIT 1',
+      [id]
+    );
+    return rows[0] || null;
+  },
+
+  // อัปเดตรหัสผ่าน (คืน true/false)
+  updatePassword: async (email, newPassword) => {
+    const res = await db.raw(
+      'UPDATE users SET password = $1 WHERE email = $2',
+      [newPassword, email]
+    );
+    return res.rowCount > 0;
+  },
 };
 
 module.exports = User;

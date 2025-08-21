@@ -1,45 +1,59 @@
-
-services:
-  db:
-    image: mysql:5.7
+services: 
+  postgres:
+    image: postgres:15
     environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_DATABASE: "iot"
+      POSTGRES_DB: "iot"
+      POSTGRES_USER: "iotuser"
+      POSTGRES_PASSWORD: "iotpass"
     volumes:
-      - db_data:/var/lib/mysql
-      - ./db/init:/docker-entrypoint-initdb.d:ro   # << เพิ่มบรรทัดนี้
+      - pg_data:/var/lib/postgresql/data
+      - ./db/init-pg:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      test: ["CMD-SHELL","pg_isready -U iotuser -d iot"]
       interval: 5s
-      retries: 10
-
+      retries: 20
+    ports:
+      - "20259:5432"        # ← 2XXXX
+    restart: unless-stopped
 
   backend:
     build: ./backend
     container_name: backend
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
     environment:
-      DB_HOST: "db"
-      DB_USER: "root"
-      DB_PASSWORD: "root"
+      NODE_ENV: "production"
+      PORT: "8000"
+      DB_HOST: "postgres"
+      DB_USER: "iotuser"
+      DB_PASSWORD: "iotpass"
       DB_NAME: "iot"
-      DB_PORT: "3306"
+      DB_PORT: "5432"       # ภายใน network ใช้ 5432 เท่านั้น
+      INIT_USER_EMAIL: "test@example.com"
+      INIT_USER_PASSWORD: "@212224236"
+      INIT_USER_NAME: "Test User"
     ports:
-      - "8000:8000"
+      - "10259:8000"        # ← 1XXXX
+    restart: unless-stopped
+
+  adminer:
+    image: adminer
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
+    ports:
+      - "30259:8080"        # ← 3XXXX
     restart: unless-stopped
 
   myapp:
     build: ./myapp
     container_name: myapp
     ports:
-      - "8081:8081"
+      - "40259:8081"        # ← 4XXXX (Metro)
     environment:
       REACT_NATIVE_PACKAGER_HOSTNAME: "0.0.0.0"
       CHOKIDAR_USEPOLLING: "1"
     restart: unless-stopped
 
-
 volumes:
-  db_data:
+  pg_data:
